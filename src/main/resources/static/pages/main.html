@@ -269,6 +269,10 @@
             //this.changename(item);
         },
         mounted(){
+            axios.get("/user/getName", {}).then(res => {
+                //res = {config, data:{err,message,data}, ....}
+                console.log(res)
+            });
             var item = window.localStorage.getItem("username");
             if (item != "admin") {
                 alert("非法访问！");

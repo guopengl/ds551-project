@@ -7,10 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Game {
     private int timestamp;
     private String name;
-    private String password;
-    private int role;
-    private int balance;
+    private String platform;
+    private String developer;
+    private double criticScore;
+    private double userScore;
+    private int year;
+    private double price;
 }

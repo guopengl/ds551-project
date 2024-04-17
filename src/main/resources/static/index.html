@@ -33,7 +33,7 @@
 
     </style>
 
-    <link rel="stylesheet" href="./plugins/elementui/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <!--    <link rel="stylesheet" href="./plugins/font-awesome/css/font-awesome.min.css">-->
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -61,7 +61,7 @@
                 </el-form-item>
                 <div style="text-align: center">
                     Not a member?
-                    <el-button style="font-size: 16px" type="text" @click="judgeURL">Register now</el-button>
+                    <el-button style="font-size: 16px" type="text" @click="register">Register now</el-button>
                 </div>
             </el-form>
         </div>
@@ -70,7 +70,7 @@
 </body>
 
 <script src="./js/vue.js"></script>
-<script src="./plugins/elementui/index.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <!--<script type="text/javascript" src="./js/jquery.min.js"></script>-->
 <script src="./js/axios-0.18.0.js"></script>
 <!--mouse special effects-->
@@ -78,13 +78,15 @@
 
 <script>
     //axios global config
-    axios.defaults.headers['token'] = window.localStorage.getItem("token");
+    // axios.defaults.headers['token'] = window.localStorage.getItem("token");
     var vue = new Vue({
         el: '#app',
         data() {
             return {
-                vedioCanPlay: false,
-                form: {role: 1},
+                form: {
+                    username: '',
+                    password: ''
+                },
                 rules: {
                     username: [
                         {required: true, message: 'Username required', trigger: 'blur'},
@@ -99,53 +101,33 @@
             localStorage.removeItem("username");
         },
         methods: {
-            canplay() {
-                this.vedioCanPlay = true
-            },
-            // 接收验证码组件提交的 4位验证码
-            createValidCode(data) {
-                this.validCode = data
-            },
-            login () {
+            login() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        var dss1 = localStorage.getItem("dss");
-                        if (dss1 === "dss") {
-                            localStorage.removeItem("dss")
-                            window.location.href = "index.html";
-
-                        } else{
                         localStorage.setItem("username",this.form.username);
                         axios.post("/user/login", this.form).then(res => {
-                            if (res.err === false) {
+                            //res = {config, data:{err,message,data}, ....}
+                            if (!res.data.err) {
                                 this.$message({
                                     type: "success",
                                     message: res.data.message
-                                })
-                                //alert(res.data.data);
-                                //console.log(res.data.data);
-                                // localStorage.setItem("token", res.data.data);
-                                //sessionStorage.setItem("user", JSON.stringify(res.data.data));  // 缓存用户信息
-                                if (this.form.username === "admin"){
-                                    window.location.href="./pages/main.html";
-                                }else{
-                                    window.location.href="./pages/main_user.html";
-                                }
-
-
+                                });
+                                window.location.href="./pages/main.html";
+                                // else{
+                                //     window.location.href="./pages/main_user.html";
+                                // }
                             } else {
-                                //执行失败
+                                //fail
                                 this.$message.error(res.data.message);
                             }
-                        })
-                    }}
+                        });
+                    }
                 })
             },
-            judgeURL () {
+            register() {
                 window.location.href="./register.html";
             },
         }
-    })
-
+    });
 </script>
 </html>

@@ -15,4 +15,12 @@ public class UserService {
         return userMapper.findByNameAndPassword(request.getUsername(), request.getPassword());
     }
 
+
+    public void addUser(LoginParams request) throws Exception {
+        User user = userMapper.findByName(request.getUsername());
+        if(user != null){
+            throw new Exception("user with username '" + request.getUsername() + "' already exits.");
+        }
+        userMapper.addUser(request.getUsername(), request.getPassword());
+    }
 }

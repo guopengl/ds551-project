@@ -16,20 +16,14 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(token != null) {
             Claims claims = JWTUtil.checkJWT(token);
             if(claims != null){
-                Integer userId = (Integer)claims.get("id");
-                String name = (String) claims.get("name");
-
-                request.setAttribute("user_id",userId);
-                request.setAttribute("name",name);
-
                 return true;
             }
         }
 
-        response.setContentType("text/html; charset=utf-8");
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter pw = response.getWriter();
-        pw.print("<script>alert('请先登录!!!');window.location.href='/index.html';</script>");
+//        response.setContentType("text/html; charset=utf-8");
+//        response.setContentType("text/html;charset=UTF-8");
+//        PrintWriter pw = response.getWriter();
+//        pw.print("<script>alert('请先登录!!!');window.location.href='/index.html';</script>");
         response.sendRedirect("index.html");
         return false;
     }

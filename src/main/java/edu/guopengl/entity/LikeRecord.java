@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class LikeRecord {
+    private String userName;
+    private String gameName;
     private int timestamp;
-    private String name;
-    private String password;
-    private int role;
-    private int balance;
 }
