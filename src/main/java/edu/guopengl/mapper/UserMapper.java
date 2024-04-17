@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserMapper {
     public User findByNameAndPassword(String name, String password){
-        JSONObject resquestParams = new JSONObject();
-        resquestParams.put("collectionName", "user");
+        JSONObject body = new JSONObject();
+        body.put("collectionName", "user");
         JSONObject query = new JSONObject();
         query.put("name", name);
         query.put("password", password);
-        resquestParams.put("query", query);
+        body.put("query", query);
 
-        JSONArray data = HttpUtil.post("http://localhost:8080/find", resquestParams).getJSONArray("data");
+        JSONArray data = HttpUtil.post("http://localhost:8080/find", body).getJSONArray("data");
         if(data.size() == 0){
             return null;
         }
@@ -26,13 +26,14 @@ public class UserMapper {
     }
 
     public User findByName(String name){
-        JSONObject resquestParams = new JSONObject();
-        resquestParams.put("collectionName", "user");
+        JSONObject body = new JSONObject();
+        body.put("collectionName", "user");
+
         JSONObject query = new JSONObject();
         query.put("name", name);
-        resquestParams.put("query", query);
+        body.put("query", query);
 
-        JSONArray data = HttpUtil.post("http://localhost:8080/find", resquestParams).getJSONArray("data");
+        JSONArray data = HttpUtil.post("http://localhost:8080/find", body).getJSONArray("data");
         if(data.size() == 0){
             return null;
         }
@@ -43,7 +44,6 @@ public class UserMapper {
 
     public void addUser(String username, String password) throws Exception {
         JSONObject body = new JSONObject();
-
         body.put("collectionName", "user");
 
         JSONObject user = new JSONObject();
@@ -58,8 +58,24 @@ public class UserMapper {
 
         JSONObject res = HttpUtil.post("http://localhost:8080/insertMany", body);
         if(res.getBoolean("err")){
-            throw new Exception("add user error");
+            throw new Exception(res.getString("message"));
         }
 
+    }
+
+    public void updateByBalance(String name, double newBalance) throws Exception {
+        JSONObject body = new JSONObject();
+        body.put("collectionName", "user");
+
+        JSONObject query = new JSONObject();
+        query.put("name", name);
+
+        JSONObject update = new JSONObject();
+        update.put("balance", newBalance);
+
+        JSONObject res = HttpUtil.post("http://localhost:8080/updateOne", body);
+        if(res.getBoolean("err")){
+            throw new Exception(res.getString("message"));
+        }
     }
 }

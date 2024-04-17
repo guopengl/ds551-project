@@ -44,16 +44,9 @@ public class UserController {
         Response res =  new Response();
 
         String token = (String) request.getSession().getAttribute("token");
-        if(token != null) {
-            Claims claims = JWTUtil.checkJWT(token);
-            if(claims != null){
-                String name = claims.getSubject();
-                res.setData(name);
-                return res;
-            }
-        }
-        res.setErr(true);
-        res.setMessage("token wrong");
+        Claims claims = JWTUtil.checkJWT(token);
+        String name = claims.getSubject();
+        res.setData(name);
         return res;
     }
     @PostMapping("/register")

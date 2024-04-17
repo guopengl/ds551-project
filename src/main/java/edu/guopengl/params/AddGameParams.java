@@ -1,14 +1,9 @@
-package edu.guopengl.entity;
+package edu.guopengl.params;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Game {
-    private int timestamp;
+public class AddGameParams {
     private String name;
     private String platform;
     private String publisher;
